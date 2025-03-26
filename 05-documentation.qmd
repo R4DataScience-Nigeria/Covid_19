@@ -1,0 +1,133 @@
+---
+title: "Covid-19"
+format: html
+editor: visual
+---
+
+# Introduction
+
+This project aims to build a predictive model to analyze and forecast COVID-19 outcomes using multiple datasets from the Azure Open Datasets COVID-19 Data Lake. The datasets used are: - **Bing COVID-19 Data** - **COVID Policy Tracker** - **ECDC COVID-19 Cases** - **COVID Tracking Project**
+
+# Datasets Overview
+
+## Bing COVID-19 Data
+
+-   **Description**: Provides daily updates on confirmed cases, deaths, and recoveries globally.
+-   **Format**: Parquet
+-   **Columns**:
+    -   `date`: Date of the data entry
+    -   `country`: Country name
+    -   `confirmed`: Number of confirmed cases
+    -   `deaths`: Number of deaths
+    -   `recovered`: Number of recoveries
+-   **Possible Outcome Columns**:
+    -   `confirmed`: Represents the number of confirmed COVID-19 cases, which is a key indicator of the spread of the virus.
+    -   `deaths`: Represents the number of deaths due to COVID-19, which is a critical measure of the severity and impact of the pandemic.
+    -   `recovered`: Represents the number of recoveries from COVID-19, which helps in understanding the recovery rate and effectiveness of treatments.
+
+## COVID Policy Tracker
+
+-   **Description**: Contains systematic information on government measures taken in response to the pandemic.
+-   **Format**: Parquet
+-   **Columns**:
+    -   `date`: Date of the data entry
+    -   `country`: Country name
+    -   `c1_school_closing`: School closing measures
+    -   `c2_workplace_closing`: Workplace closing measures
+    -   `c3_cancel_public_events`: Cancellation of public events
+    -   `c4_restrictions_on_gatherings`: Restrictions on gatherings
+    -   `c5_close_public_transport`: Closure of public transport
+    -   `c6_stay_at_home_requirements`: Stay-at-home requirements
+    -   `c7_restrictions_on_internal_movement`: Restrictions on internal movement
+    -   `c8_international_travel_controls`: International travel controls
+    -   `confirmedcases`: Number of confirmed cases
+    -   `confirmeddeaths`: Number of deaths
+-   **Possible Outcome Columns**:
+    -   `confirmedcases`: Represents the number of confirmed COVID-19 cases, which is essential for assessing the effectiveness of government policies.
+    -   `confirmeddeaths`: Represents the number of deaths due to COVID-19, which is crucial for evaluating the impact of government measures on public health.
+
+## ECDC COVID-19 Cases
+
+-   **Description**: Provides data on COVID-19 cases reported by the European Centre for Disease Prevention and Control (ECDC).
+-   **Format**: Parquet
+-   **Columns**:
+    -   `date`: Date of the data entry
+    -   `country`: Country name
+    -   `cases`: Number of cases
+    -   `deaths`: Number of deaths
+-   **Possible Outcome Columns**:
+    -   `cases`: Represents the number of COVID-19 cases, which is vital for tracking the spread and intensity of the pandemic.
+    -   `deaths`: Represents the number of deaths due to COVID-19, which is important for understanding the mortality rate and impact on public health.
+
+## COVID Tracking Project
+
+-   **Description**: Tracks COVID-19 testing and outcomes in the United States.
+-   **Format**: Parquet
+-   **Columns**:
+    -   `date`: Date of the data entry
+    -   `state`: State name
+    -   `positive`: Number of positive cases
+    -   `negative`: Number of negative cases
+    -   `hospitalized`: Number of hospitalizations
+    -   `death`: Number of deaths
+-   **Possible Outcome Columns**:
+    -   `positive`: Represents the number of positive COVID-19 cases, which is crucial for understanding the spread and prevalence of the virus.
+    -   `negative`: Represents the number of negative test results, which helps in assessing testing coverage and accuracy.
+    -   `hospitalized`: Represents the number of hospitalizations due to COVID-19, which is important for evaluating healthcare system capacity and response.
+    -   `death`: Represents the number of deaths due to COVID-19, which is critical for understanding the severity and impact on public health.
+
+# Data Cleaning and Preprocessing in R
+
+## Loading Libraries
+
+``` r
+# Load necessary libraries
+library(dplyr)
+library(readr)
+library(arrow)
+```
+
+## Loading Datasets
+
+``` r
+# Load Bing COVID-19 Data
+bing_df <- read_parquet('path/to/bing_covid-19_data.parquet')
+
+# Load COVID Policy Tracker
+policy_df <- read_parquet('path/to/covid_policy_tracker.parquet')
+
+# Load ECDC COVID-19 Cases
+ecdc_df <- read_parquet('path/to/ecdc_cases.parquet')
+
+# Load COVID Tracking Project
+tracking_df <- read_parquet('path/to/covid_tracking.parquet')
+```
+
+## Data Cleaning
+
+### Bing COVID-19 Data
+
+``` r
+ibrary(arrow)
+library(dplyr)
+library(naniar)
+library(tidyverse)
+
+#Reading in the dataset
+bing_covid <- read_parquet("data/bing_covid-19_data.parquet")
+  
+#Exploring dataset
+str(bing_covid)
+#Checing for missing value 
+missing_per_column <- colSums(is.na(bing_covid))
+View(missing_per_column)  
+gg_miss_var(bing_covid)  
+  
+#Removing missing varibles
+bing_covid <- bing_covid %>%
+                drop_na()
+```
+
+# Conclusion
+
+This documentation provides an overview of the datasets and the data cleaning process in R. The cleaned data will be used to build a predictive model to analyze and forecast COVID-19 outcomes. Further data processing and model building will be done in subsequent steps
